@@ -1,5 +1,6 @@
 const express = require('express')
-const customer = require('./routes/customer')
+// const customer = require('./routes/customer')
+const user = require('./routes/user')
 const item = require('./routes/item')
 const app = express()
 const port = 4000
@@ -7,14 +8,15 @@ const port = 4000
 
 
 app.use(express.json())
-app.use('/customer', customer)
-app.use('/item',  item)
+// app.use('/customer', customer)
+// app.use('/item', item)
+app.use('/users', user)
 
 
-app.get('/', (req, res) => {
-    console.log('get request comming! ');
-    res.send('get req came for / route')
-})
+// app.get('/', (req, res) => {
+//     console.log('get request comming! ');
+//     res.send('get req came for / route')
+// })
 
 
 
