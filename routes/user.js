@@ -7,6 +7,7 @@ router.get('/', (req,res) =>{
 })
 
 router.post('/', (req, res) => {
+    console.log(req.body);
     res.send('user post method')
 })
 
@@ -15,6 +16,7 @@ router.put('/', (req, res) => {
 })
 
 router.delete('/:id', (req, res) => {
+    console.log(req.params.id);
     res.send('delete method')
 })
 
