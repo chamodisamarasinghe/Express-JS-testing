@@ -26,25 +26,74 @@ connection.connect(function(err) {
 const router = express.Router()
 
 router.get('/', (req,res) =>{
-    res.send('user get')
+    var query = "SELECT * FROM users";
+    connection.query(query, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
 router.post('/', (req, res) => {
-    console.log(req.body);
-    res.send('user post method')
+    const id = req.body.id
+    const name = req.body.name
+    const username = req.body.username
+
+    var query = "INSERT INTO users (id, name, username) VALUES (?, ?, ?)";
+
+    connection.query(query, [id, name, username], (err) => {
+        if (err) {
+            res.send({ 'message': 'duplicate entry' })
+        } else {
+            res.send({ 'message': 'user created!' })
+        }
+    })
 })
 
 router.put('/', (req, res) => {
-    res.send('put method')
+    const id = req.body.id
+    const name = req.body.name
+    const username = req.body.username
+
+    var query = "UPDATE users SET name=?, username=? WHERE id=?";
+
+    connection.query(query, [name, username, id], (err, rows) => {
+        if (err) console.log(err);
+
+        if (rows.affectedRows > 0) {
+            res.send({ 'message': 'user updated' })
+        } else {
+            res.send({ 'message': 'user not found' })
+        }
+        // res.send(rows)
+    })
 })
 
 router.delete('/:id', (req, res) => {
-    console.log(req.params.id);
-    res.send('delete method')
+    const id = req.params.id
+
+    var query = "DELETE FROM users WHERE id=?";
+
+    connection.query(query, [id], (err, rows) => {
+        if (err) console.log(err);
+
+        if (rows.affectedRows > 0) {
+            res.send({ 'message': 'user deleted' })
+        } else {
+            res.send({ 'message': 'user not found' })
+        }
+    })
 })
 
 router.get('/:id', (req, res) => {
-    res.send('get user by id')
+    const id = req.params.id
+
+    var query = "SELECT * from users WHERE id=?";
+
+    connection.query(query, [id], (err, row) => {
+        if(err) console.log(err);
+
+        res.send(row)
+    })
 })
 
 module.exports = router
